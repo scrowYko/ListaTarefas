@@ -1,5 +1,6 @@
 //importando os hooks
 import { useCallback, useReducer, useEffect, useState } from "react";
+import './ListaTarefas.css'
 
 const tarefasReducer = (state, action) => {
     switch(action.type){
@@ -47,6 +48,10 @@ export default function ListaTarefas(){
         dispatch({type: 'concluir_tarefa', payload: index })
     , []})
 
+    const excluirTarefa = useCallback((index) => {
+        dispatch({type: 'excluir_tarefa', payload: index})
+    , []})
+
     return(
         <div className="center">
             <h1>Lista de Tarefas</h1>
@@ -59,7 +64,7 @@ export default function ListaTarefas(){
                 />
                 <button onClick={addTarefa}>Add tarefa</button>
             </div>
-            <ul>
+            <ul className="listArea">
                 {/*Criando a lista com as tarefas que forem sendo adicionadas 
                     vamos usar o .map para mapear cada tareda 
                     usar o index para identificar a posição de cada tarefa adicionada
@@ -67,7 +72,7 @@ export default function ListaTarefas(){
 
                 {tarefaAtual.map((tarefas, index) =>(
                     //lista de acordo com a posição da tarefa anterior
-                    <li key={index}>
+                    <li key={index} className="itemList">
                         <span style={{textDecoration: tarefas.completed ? 'line-through' : 'none' }}>
                             {tarefas.text}
                         </span>
@@ -76,6 +81,7 @@ export default function ListaTarefas(){
                         {!tarefas.completed && (
                             <>
                                 <button onClick={() => concluirTarefa(index)}>Concluir</button>
+                                <button onClick={() => excluirTarefa(index)}>Excluir</button>
                             </>
                         )}
                     </li>
